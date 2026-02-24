@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Khushi Di! 🎂🎉</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700;900&family=Dancing+Script:wght@700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: #0a0a1a
+    }
+
+    /* SCENES */
+    .scene {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
+      overflow-x: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .8s, transform .8s;
+      transform: scale(1.05);
+      z-index: 1;
+      padding: 40px 20px 60px
+    }
+
+    .scene.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: scale(1);
+      z-index: 10
+    }
+
+    .scene.exit {
+      opacity: 0;
+      transform: scale(.92)
+    }
+
+    .scene-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+      width: 100%
+    }
+
+    /* SCENE 1 */
+    #scene1 {
+      background: radial-gradient(ellipse at 50% 30%, #1a1040, #0a0a1a 70%);
+      justify-content: center
+    }
+
+    #particles-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0
+    }
+
+    .entrance-content {
+      position: relative;
+      z-index: 2;
+      text-align: center
+    }
+
+    .entrance-content .subtitle {
+      font-size: 1.1rem;
+      color: #b388ff;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      animation: fadeSlideUp 1s .3s both
+    }
+
+    .entrance-content h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      background: linear-gradient(135deg, #ff6fd8, #ff9a9e, #fad0c4, #fbc2eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      animation: fadeSlideUp 1s .5s both
+    }
+
+    .entrance-content .emoji-row {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      animation: fadeSlideUp 1s .7s both
+    }
+
+    .open-gift-btn {
+      padding: 18px 50px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff6fd8, #3813c2);
+      cursor: pointer;
+      animation: fadeSlideUp 1s .9s both, pulseGlow 2s 2s infinite;
+      transition: transform .2s;
+      position: relative;
+      z-index: 2
+    }
+
+    .open-gift-btn:hover {
+      transform: scale(1.08)
+    }
+
+    .open-gift-btn::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 52px;
+      background: linear-gradient(135deg, #ff6fd8, #3813c2, #ff6fd8);
+      z-index: -1;
+      filter: blur(12px);
+      opacity: .6
+    }
+
+    /* ENVELOPE */
+    .envelope-wrap {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0a0a1a;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .5s
+    }
+
+    .envelope-wrap.active {
+      opacity: 1;
+      pointer-events: all
+    }
+
+    .envelope {
+      width: 280px;
+      height: 200px;
+      position: relative;
+      overflow: visible
+    }
+
+    .envelope .body {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 15px 40px rgba(255, 105, 180, .3)
+    }
+
+    .envelope .flap {
+      width: 0;
+      height: 0;
+      border-left: 140px solid transparent;
+      border-right: 140px solid transparent;
+      border-top: 120px solid #ff6fb5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: top center;
+      transition: transform .8s cubic-bezier(.68, -.55, .27, 1.55);
+      z-index: 2
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(180deg)
+    }
+
+    .envelope .letter {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 250px;
+      min-height: 140px;
+      padding: 20px 15px;
+      background: #fff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .8s .4s cubic-bezier(.68, -.55, .27, 1.55);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, .15);
+      z-index: 3
+    }
+
+    .envelope.open .letter {
+      transform: translateX(-50%) translateY(-200px)
+    }
+
+    .letter-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.2rem;
+      color: #e91e90;
+      text-align: center;
+      padding: 5px;
+      line-height: 1.6
+    }
+
+    /* SCENE 2 — CAKE */
+    #scene2 {
+      background: radial-gradient(ellipse at 50% 80%, #1a0a2e, #0a0a1a 70%);
+      justify-content: center
+    }
+
+    .cake-area {
+      text-align: center;
+      position: relative;
+      z-index: 2
+    }
+
+    .cake-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: #fbc2eb;
+      margin-bottom: 20px;
+      animation: fadeSlideUp .8s both
+    }
+
+    .cake-title .sparkle {
+      display: inline-block;
+      animation: sparklePulse 1s infinite alternate
+    }
+
+    .cake-container {
+      position: relative;
+      width: 260px;
+      height: 280px;
+      margin: 0 auto 20px
+    }
+
+    .cake-layer {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 18px
+    }
+
+    .cake-layer-1 {
+      bottom: 0;
+      width: 260px;
+      height: 90px;
+      background: linear-gradient(180deg, #ff9a9e, #e8637a);
+      box-shadow: 0 8px 0 #c44d66, 0 12px 25px rgba(232, 99, 122, .4)
+    }
+
+    .cake-layer-1::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -5px;
+      right: -5px;
+      height: 25px;
+      background: linear-gradient(180deg, #fbc2eb, #ff9a9e);
+      border-radius: 50% 50% 0 0
+    }
+
+    .cake-drip {
+      position: absolute;
+      top: -8px;
+      width: 18px;
+      height: 30px;
+      background: #fbc2eb;
+      border-radius: 0 0 50% 50%
+    }
+
+    .cake-layer-1 .cake-drip:nth-child(1) {
+      left: 20px;
+      height: 25px
+    }
+
+    .cake-layer-1 .cake-drip:nth-child(2) {
+      left: 60px;
+      height: 35px
+    }
+
+    .cake-layer-1 .cake-drip:nth-child(3) {
+      left: 110px;
+      height: 20px
+    }
+
+    .cake-layer-1 .cake-drip:nth-child(4) {
+      left: 160px;
+      height: 30px
+    }
+
+    .cake-layer-1 .cake-drip:nth-child(5) {
+      left: 210px;
+      height: 22px
+    }
+
+    .cake-layer-2 {
+      bottom: 80px;
+      width: 200px;
+      height: 75px;
+      background: linear-gradient(180deg, #a18cd1, #7b52b9);
+      box-shadow: 0 8px 0 #5e3d8f
+    }
+
+    .cake-layer-2::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -5px;
+      right: -5px;
+      height: 25px;
+      background: linear-gradient(180deg, #c3b1e1, #a18cd1);
+      border-radius: 50% 50% 0 0
+    }
+
+    .cake-layer-3 {
+      bottom: 145px;
+      width: 150px;
+      height: 65px;
+      background: linear-gradient(180deg, #fad0c4, #f0a091);
+      box-shadow: 0 8px 0 #d88578;
+      border-radius: 14px
+    }
+
+    .cake-layer-3::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -5px;
+      right: -5px;
+      height: 22px;
+      background: linear-gradient(180deg, #fce4de, #fad0c4);
+      border-radius: 50% 50% 0 0
+    }
+
+    .cake-decoration {
+      position: absolute;
+      font-size: 14px
+    }
+
+    .cake-layer-1 .cake-decoration:nth-child(6) {
+      top: 25px;
+      left: 30px
+    }
+
+    .cake-layer-1 .cake-decoration:nth-child(7) {
+      top: 35px;
+      left: 130px
+    }
+
+    .cake-layer-1 .cake-decoration:nth-child(8) {
+      top: 20px;
+      left: 200px
+    }
+
+    .candles-row {
+      position: absolute;
+      bottom: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px
+    }
+
+    .candle {
+      width: 10px;
+      height: 45px;
+      border-radius: 3px 3px 0 0;
+      position: relative
+    }
+
+    .candle:nth-child(1) {
+      background: linear-gradient(180deg, #ff6fd8, #ff3cac)
+    }
+
+    .candle:nth-child(2) {
+      background: linear-gradient(180deg, #3cba92, #0ba360)
+    }
+
+    .candle:nth-child(3) {
+      background: linear-gradient(180deg, #f9d423, #f83600)
+    }
+
+    .candle:nth-child(4) {
+      background: linear-gradient(180deg, #667eea, #764ba2)
+    }
+
+    .candle:nth-child(5) {
+      background: linear-gradient(180deg, #ff9a9e, #fecfef)
+    }
+
+    .candle .wick {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 8px;
+      background: #333;
+      border-radius: 1px
+    }
+
+    .candle .flame {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 20px;
+      background: radial-gradient(ellipse at 50% 90%, #fff, #ffe082 30%, #ff9800 60%, transparent);
+      border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+      animation: flicker .15s infinite alternate;
+      filter: blur(.5px);
+      transition: opacity .5s, transform .5s
+    }
+
+    .candle .flame.out {
+      opacity: 0;
+      transform: translateX(-50%) scale(0)
+    }
+
+    .candle .smoke {
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 0;
+      background: rgba(200, 200, 200, .5);
+      border-radius: 50%;
+      opacity: 0
+    }
+
+    .candle .smoke.rising {
+      animation: smokeRise 1s forwards
+    }
+
+    .blow-btn {
+      padding: 14px 40px;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff6fd8, #3813c2);
+      cursor: pointer;
+      transition: transform .2s;
+      margin-top: 10px;
+      animation: pulseGlow 2s infinite
+    }
+
+    .blow-btn:hover {
+      transform: scale(1.08)
+    }
+
+    .blow-btn.hidden {
+      display: none
+    }
+
+    /* HBD reveal after candles blown */
+    .hbd-reveal {
+      opacity: 0;
+      transition: opacity .6s;
+      margin-top: 15px
+    }
+
+    .hbd-reveal.show {
+      opacity: 1
+    }
+
+    .hbd-reveal h2 {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.8rem);
+      background: linear-gradient(135deg, #ff6fd8, #fbc2eb, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease infinite;
+      background-size: 300% 300%
+    }
+
+    .hbd-reveal .hbd-emojis {
+      font-size: 2rem;
+      margin-top: 8px;
+      animation: pulse 1.5s infinite
+    }
+
+    .cake-next-btn {
+      padding: 12px 35px;
+      border: 2px solid rgba(255, 255, 255, .2);
+      border-radius: 50px;
+      background: rgba(255, 255, 255, .05);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all .3s;
+      margin-top: 15px;
+      display: none
+    }
+
+    .cake-next-btn:hover {
+      background: rgba(255, 111, 216, .2);
+      border-color: #ff6fd8;
+      transform: scale(1.05)
+    }
+
+    /* SCENE 3 — GALLERY */
+    #scene3 {
+      background: radial-gradient(ellipse at 50% 50%, #1a1040, #0a0a1a 70%)
+    }
+
+    .gallery-section {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 600px
+    }
+
+    .gallery-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: #fbc2eb;
+      margin-bottom: 20px
+    }
+
+    .gallery-slider {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      height: 460px;
+      margin: 0 auto;
+      perspective: 1000px
+    }
+
+    .gallery-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateX(80px) rotateY(15deg);
+      transition: all .7s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .gallery-slide.active {
+      opacity: 1;
+      transform: translateX(0) rotateY(0)
+    }
+
+    .gallery-slide.exit-left {
+      opacity: 0;
+      transform: translateX(-80px) rotateY(-15deg)
+    }
+
+    .gallery-frame {
+      width: 100%;
+      max-width: 320px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(255, 105, 180, .25), 0 0 0 3px rgba(255, 255, 255, .1);
+      position: relative
+    }
+
+    .gallery-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 380px;
+      object-fit: cover
+    }
+
+    .gallery-frame .frame-glow {
+      position: absolute;
+      inset: -2px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #ff6fd8, #3813c2, #fbc2eb, #ff6fd8);
+      z-index: -1;
+      filter: blur(6px);
+      opacity: .5
+    }
+
+    .gallery-caption {
+      margin-top: 12px;
+      font-size: .95rem;
+      color: #e0c3fc;
+      font-style: italic;
+      opacity: .9
+    }
+
+    .gallery-nav {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+      justify-content: center
+    }
+
+    .gallery-nav button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .2);
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all .3s;
+      backdrop-filter: blur(8px)
+    }
+
+    .gallery-nav button:hover {
+      background: rgba(255, 111, 216, .3);
+      border-color: #ff6fd8;
+      transform: scale(1.1)
+    }
+
+    .gallery-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 12px
+    }
+
+    .gallery-dots .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .2);
+      transition: all .3s;
+      cursor: pointer
+    }
+
+    .gallery-dots .dot.active {
+      background: #ff6fd8;
+      transform: scale(1.3);
+      box-shadow: 0 0 10px #ff6fd8
+    }
+
+    /* SCENE 4 — WISHES */
+    #scene4 {
+      background: radial-gradient(ellipse at 50% 40%, #1a0a2e, #0a0a1a 70%)
+    }
+
+    .wishes-section {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      max-width: 650px
+    }
+
+    .wishes-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      background: linear-gradient(135deg, #ff6fd8, #fbc2eb, #ff9a9e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px
+    }
+
+    .wish-line {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: #e0c3fc;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(20px);
+      margin-bottom: 4px
+    }
+
+    .wish-line.visible {
+      animation: fadeSlideUp .6s forwards
+    }
+
+    .wish-line .highlight {
+      color: #ff9a9e;
+      font-weight: 600
+    }
+
+    .teddy-scene {
+      position: relative;
+      width: 280px;
+      height: 180px;
+      margin: 20px auto 0
+    }
+
+    .teddy-svg {
+      position: absolute;
+      animation: teddyBounce 2s ease-in-out infinite
+    }
+
+    .teddy-svg.mocha {
+      left: 10px;
+      bottom: 0
+    }
+
+    .teddy-svg.milk {
+      right: 10px;
+      bottom: 0;
+      animation-delay: .3s
+    }
+
+    .teddy-heart {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5rem;
+      animation: heartFloat 2s ease-in-out infinite
+    }
+
+    /* SCENE 5 — BALLOON POP GAME */
+    #scene5 {
+      background: radial-gradient(ellipse at 50% 50%, #1a0a2e, #0a0a1a 70%)
+    }
+
+    .game-section {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 600px
+    }
+
+    .game-title {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: #fbc2eb;
+      margin-bottom: 8px
+    }
+
+    .game-subtitle {
+      font-size: .95rem;
+      color: #b388ff;
+      margin-bottom: 15px
+    }
+
+    .game-score {
+      font-size: 1rem;
+      color: #ffd700;
+      margin-bottom: 10px
+    }
+
+    #balloonCanvas {
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .03);
+      border: 2px solid rgba(255, 255, 255, .08);
+      max-width: 100%;
+      cursor: crosshair
+    }
+
+    .game-result {
+      margin-top: 12px;
+      font-family: 'Pacifico', cursive;
+      font-size: 1.5rem;
+      color: #ffd700;
+      opacity: 0;
+      transition: opacity .5s
+    }
+
+    .game-result.show {
+      opacity: 1
+    }
+
+    /* SCENE 6 — FINALE */
+    #scene6 {
+      background: radial-gradient(ellipse at 50% 50%, #1a0a2e, #0a0a1a 70%);
+      justify-content: center
+    }
+
+    .finale-content {
+      text-align: center;
+      position: relative;
+      z-index: 2
+    }
+
+    .finale-name {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(2rem, 7vw, 4.5rem);
+      background: linear-gradient(135deg, #ff6fd8, #fbc2eb, #ff9a9e, #fad0c4, #3cba92, #667eea, #ff6fd8);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease infinite;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 30px rgba(255, 111, 216, .4));
+      padding: 0 10px;
+      word-break: break-word;
+      width: 100%;
+      max-width: 90vw
+    }
+
+    .finale-bday {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: #fbc2eb;
+      margin-bottom: 20px
+    }
+
+    .finale-emojis {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite
+    }
+
+    .finale-love {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, .5);
+      letter-spacing: 3px
+    }
+
+    .finale-love span {
+      color: #ff6fd8;
+      font-size: 1.4rem;
+      animation: heartbeat 1s infinite;
+      display: inline-block
+    }
+
+    /* NAV BUTTONS */
+    .scene-next {
+      padding: 12px 35px;
+      border: 2px solid rgba(255, 255, 255, .2);
+      border-radius: 50px;
+      background: rgba(255, 255, 255, .05);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all .3s;
+      z-index: 10;
+      letter-spacing: 1px;
+      margin-top: 18px;
+      flex-shrink: 0
+    }
+
+    .scene-next:hover {
+      background: rgba(255, 111, 216, .2);
+      border-color: #ff6fd8;
+      transform: scale(1.05)
+    }
+
+    /* MUSIC */
+    .music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .2);
+      background: rgba(255, 255, 255, .07);
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      z-index: 200;
+      backdrop-filter: blur(10px);
+      transition: all .3s;
+      display: none
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 111, 216, .3);
+      border-color: #ff6fd8
+    }
+
+    .music-btn.playing {
+      animation: musicPulse 1s infinite;
+      border-color: #ff6fd8
+    }
+
+    /* FLOATING */
+    .floating-elements {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+      overflow: hidden
+    }
+
+    .float-item {
+      position: absolute;
+      font-size: 1.8rem;
+      opacity: .6;
+      animation: floatUp linear infinite
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50
+    }
+
+    /* KEYFRAMES */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes pulseGlow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(255, 111, 216, .3), 0 0 60px rgba(255, 111, 216, .1)
+      }
+
+      50% {
+        box-shadow: 0 0 30px rgba(255, 111, 216, .5), 0 0 80px rgba(255, 111, 216, .2)
+      }
+    }
+
+    @keyframes flicker {
+      0% {
+        transform: translateX(-50%) scale(1) rotate(-2deg)
+      }
+
+      100% {
+        transform: translateX(-50%) scale(1.1, 1.05) rotate(2deg)
+      }
+    }
+
+    @keyframes smokeRise {
+      0% {
+        height: 0;
+        opacity: .6;
+        top: -35px
+      }
+
+      100% {
+        height: 20px;
+        opacity: 0;
+        top: -65px
+      }
+    }
+
+    @keyframes sparklePulse {
+      from {
+        transform: scale(1)
+      }
+
+      to {
+        transform: scale(1.3)
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .6
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%
+      }
+
+      50% {
+        background-position: 100% 50%
+      }
+
+      100% {
+        background-position: 0% 50%
+      }
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      15% {
+        transform: scale(1.25)
+      }
+
+      30% {
+        transform: scale(1)
+      }
+
+      45% {
+        transform: scale(1.15)
+      }
+    }
+
+    @keyframes teddyBounce {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-12px)
+      }
+    }
+
+    @keyframes heartFloat {
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0) scale(1)
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(-15px) scale(1.15)
+      }
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0
+      }
+
+      10% {
+        opacity: .6
+      }
+
+      90% {
+        opacity: .6
+      }
+
+      100% {
+        transform: translateY(-100px) rotate(720deg);
+        opacity: 0
+      }
+    }
+
+    @keyframes musicPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 111, 216, .4)
+      }
+
+      50% {
+        box-shadow: 0 0 0 12px rgba(255, 111, 216, 0)
+      }
+    }
+
+    @keyframes popBurst {
+      0% {
+        transform: scale(1);
+        opacity: 1
+      }
+
+      100% {
+        transform: scale(1.8);
+        opacity: 0
+      }
+    }
+
+    @media(max-width:768px) {
+      .scene {
+        padding: 30px 15px 50px
+      }
+
+      .entrance-content h1 {
+        font-size: clamp(1.6rem, 5vw, 2.5rem)
+      }
+
+      .envelope {
+        width: 250px;
+        height: 180px
+      }
+
+      .envelope .flap {
+        border-left-width: 125px;
+        border-right-width: 125px;
+        border-top-width: 105px
+      }
+
+      .envelope .letter {
+        width: 220px;
+        min-height: 120px
+      }
+
+      .envelope.open .letter {
+        transform: translateX(-50%) translateY(-180px)
+      }
+
+      .cake-container {
+        transform: scale(.7);
+        margin-bottom: 0
+      }
+
+      .cake-title {
+        font-size: clamp(1.2rem, 4vw, 1.8rem)
+      }
+
+      .gallery-slider {
+        height: 350px;
+        max-width: 300px
+      }
+
+      .gallery-frame img {
+        max-height: 280px
+      }
+
+      .wishes-title {
+        font-size: clamp(1.4rem, 4vw, 2rem)
+      }
+
+      .wish-line {
+        font-size: .95rem
+      }
+
+      .teddy-scene {
+        transform: scale(.75);
+        height: 140px
+      }
+
+      .finale-name {
+        font-size: clamp(1.8rem, 6vw, 3rem)
+      }
+
+      .finale-bday {
+        font-size: clamp(1.2rem, 3.5vw, 1.8rem)
+      }
+
+      .finale-emojis {
+        font-size: 1.8rem
+      }
+
+      #balloonCanvas {
+        width: 100% !important;
+        height: 300px !important
+      }
+
+      .game-title {
+        font-size: clamp(1.2rem, 4vw, 1.6rem)
+      }
+
+      .scene-next,
+      .blow-btn,
+      .cake-next-btn {
+        padding: 10px 28px;
+        font-size: .9rem
+      }
+
+      .open-gift-btn {
+        padding: 14px 40px;
+        font-size: 1rem
+      }
+
+      .music-btn {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+        top: 12px;
+        right: 12px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <audio id="bgMusic" loop preload="auto">
+    <source src="audio.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-btn" id="musicBtn" title="Toggle Music">🎵</button>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="floating-elements" id="floatingElements"></div>
+
+  <!-- SCENE 1: ENTRANCE -->
+  <div class="scene active" id="scene1">
+    <canvas id="particles-canvas"></canvas>
+    <div class="scene-center">
+      <div class="entrance-content">
+        <p class="subtitle">✨ A Special Day is Here ✨</p>
+        <h1>Someone Amazing's<br>Birthday! 🎂</h1>
+        <div class="emoji-row">🎉🎈🎁🧁🌟</div>
+        <button class="open-gift-btn" id="openGiftBtn">Open Your Gift 🎁</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENVELOPE OVERLAY -->
+  <div class="envelope-wrap" id="envelopeWrap">
+    <div class="envelope" id="envelope">
+      <div class="body">
+        <div class="flap"></div>
+        <div class="letter">
+          <div class="letter-text">Dear Khushi Di,<br>This one's for you! 💖<br><small>— tap to continue —</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 2: CAKE -->
+  <div class="scene" id="scene2">
+    <div class="scene-center">
+      <div class="cake-area">
+        <h2 class="cake-title">Make a Wish, Khushi Di! <span class="sparkle">🌟</span></h2>
+        <div class="cake-container">
+          <div class="candles-row">
+            <div class="candle">
+              <div class="wick"></div>
+              <div class="flame"></div>
+              <div class="smoke"></div>
+            </div>
+            <div class="candle">
+              <div class="wick"></div>
+              <div class="flame"></div>
+              <div class="smoke"></div>
+            </div>
+            <div class="candle">
+              <div class="wick"></div>
+              <div class="flame"></div>
+              <div class="smoke"></div>
+            </div>
+            <div class="candle">
+              <div class="wick"></div>
+              <div class="flame"></div>
+              <div class="smoke"></div>
+            </div>
+            <div class="candle">
+              <div class="wick"></div>
+              <div class="flame"></div>
+              <div class="smoke"></div>
+            </div>
+          </div>
+          <div class="cake-layer cake-layer-3"></div>
+          <div class="cake-layer cake-layer-2"></div>
+          <div class="cake-layer cake-layer-1">
+            <div class="cake-drip"></div>
+            <div class="cake-drip"></div>
+            <div class="cake-drip"></div>
+            <div class="cake-drip"></div>
+            <div class="cake-drip"></div>
+            <span class="cake-decoration">🍓</span><span class="cake-decoration">🌸</span><span
+              class="cake-decoration">💖</span>
+          </div>
+        </div>
+        <button class="blow-btn" id="blowBtn">🌬️ Blow Out the Candles!</button>
+        <div class="hbd-reveal" id="hbdReveal">
+          <h2>🎉 Happy Birthday, Khushi Di! 🎂</h2>
+          <div class="hbd-emojis">🥳 🎊 💃 🎶 💖</div>
+        </div>
+        <button class="cake-next-btn" id="cakeNext">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: GALLERY -->
+  <div class="scene" id="scene3">
+    <div class="scene-center">
+      <div class="gallery-section">
+        <h2 class="gallery-title">✨ Our Beautiful Birthday Girl ✨</h2>
+        <div class="gallery-slider" id="gallerySlider">
+          <div class="gallery-slide active" data-slide="0">
+            <div class="gallery-frame">
+              <div class="frame-glow"></div><img src="Screenshot 2026-02-24 182250.png" alt="Khushi Di">
+            </div>
+            <p class="gallery-caption">"The one who lights up every room 🌟"</p>
+          </div>
+          <div class="gallery-slide" data-slide="1">
+            <div class="gallery-frame">
+              <div class="frame-glow"></div><img src="Screenshot 2026-02-24 182357.png" alt="Khushi Di">
+            </div>
+            <p class="gallery-caption">"Elegance personified 💜"</p>
+          </div>
+          <div class="gallery-slide" data-slide="2">
+            <div class="gallery-frame">
+              <div class="frame-glow"></div><img src="Screenshot 2026-02-24 182417.png" alt="Khushi Di">
+            </div>
+            <p class="gallery-caption">"That million dollar smile 😊✨"</p>
+          </div>
+          <div class="gallery-slide" data-slide="3">
+            <div class="gallery-frame">
+              <div class="frame-glow"></div><img src="Screenshot 2026-02-24 182614.png" alt="Khushi Di">
+            </div>
+            <p class="gallery-caption">"Nature's beauty meets the birthday queen 🌺"</p>
+          </div>
+        </div>
+        <div class="gallery-nav">
+          <button id="prevSlide">◀</button>
+          <button id="nextSlide">▶</button>
+        </div>
+        <div class="gallery-dots" id="galleryDots">
+          <span class="dot active" data-dot="0"></span><span class="dot" data-dot="1"></span><span class="dot"
+            data-dot="2"></span><span class="dot" data-dot="3"></span>
+        </div>
+        <button class="scene-next" id="galleryNext">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 4: WISHES + TEDDY -->
+  <div class="scene" id="scene4">
+    <div class="scene-center">
+      <div class="wishes-section">
+        <h2 class="wishes-title">💝 Khushi Di 💝</h2>
+        <div id="wishLines">
+          <p class="wish-line">On your special day, here's wishing you</p>
+          <p class="wish-line">all the <span class="highlight">love</span>, <span class="highlight">laughter</span>, and
+            <span class="highlight">happiness</span>
+          </p>
+          <p class="wish-line">that you truly deserve! 🌟</p>
+          <p class="wish-line">May this year bring you closer to</p>
+          <p class="wish-line">all your <span class="highlight">dreams</span> and <span
+              class="highlight">aspirations</span> 🦋</p>
+          <p class="wish-line">Keep shining, keep smiling,</p>
+          <p class="wish-line">and keep being the <span class="highlight">amazing person</span> you are! 💖</p>
+          <p class="wish-line" style="margin-top:12px;font-size:1.3rem;font-weight:700;color:#ff9a9e;">Happy Birthday,
+            Khushi Di! 🎂🎉</p>
+        </div>
+        <div class="teddy-scene">
+          <div class="teddy-heart">💕</div>
+          <!-- Mocha (Brown Bear — Milk & Mocha style) -->
+          <svg class="teddy-svg mocha" width="120" height="150" viewBox="0 0 120 150">
+            <!-- Body -->
+            <ellipse cx="60" cy="112" rx="36" ry="32" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <!-- Feet -->
+            <ellipse cx="40" cy="140" rx="16" ry="8" fill="#9a6b3c" stroke="#3d2b1f" stroke-width="2" />
+            <ellipse cx="80" cy="140" rx="16" ry="8" fill="#9a6b3c" stroke="#3d2b1f" stroke-width="2" />
+            <!-- Arms -->
+            <ellipse cx="26" cy="108" rx="14" ry="10" fill="#b5804e" stroke="#3d2b1f" stroke-width="2"
+              transform="rotate(-15,26,108)" />
+            <ellipse cx="94" cy="108" rx="14" ry="10" fill="#b5804e" stroke="#3d2b1f" stroke-width="2"
+              transform="rotate(15,94,108)" />
+            <!-- Head -->
+            <circle cx="60" cy="55" r="38" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <!-- Ears -->
+            <circle cx="28" cy="25" r="15" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="28" cy="25" r="9" fill="#9a6b3c" />
+            <circle cx="92" cy="25" r="15" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="92" cy="25" r="9" fill="#9a6b3c" />
+            <!-- Snout -->
+            <ellipse cx="60" cy="62" rx="14" ry="10" fill="#debb8e" />
+            <!-- Eyes (simple dots) -->
+            <circle cx="47" cy="50" r="3" fill="#1a1a1a" />
+            <circle cx="73" cy="50" r="3" fill="#1a1a1a" />
+            <!-- Nose -->
+            <ellipse cx="60" cy="59" rx="4" ry="3" fill="#3d2b1f" />
+            <!-- Mouth -->
+            <path d="M56 63 Q60 68 64 63" stroke="#3d2b1f" stroke-width="2" fill="none" stroke-linecap="round" />
+            <!-- Big Pink Cheeks -->
+            <circle cx="38" cy="62" r="8" fill="#f4a0a0" opacity=".6" />
+            <circle cx="82" cy="62" r="8" fill="#f4a0a0" opacity=".6" />
+            <!-- Party Hat -->
+            <polygon points="60,8 47,38 73,38" fill="#ff6fd8" stroke="#3d2b1f" stroke-width="1.5" />
+            <circle cx="60" cy="8" r="4" fill="#ffd700" stroke="#3d2b1f" stroke-width="1" />
+            <line x1="50" y1="30" x2="70" y2="30" stroke="#fbc2eb" stroke-width="2.5" />
+          </svg>
+          <!-- Milk (White Bear — Milk & Mocha style) -->
+          <svg class="teddy-svg milk" width="120" height="150" viewBox="0 0 120 150">
+            <!-- Body -->
+            <ellipse cx="60" cy="112" rx="36" ry="32" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <!-- Feet -->
+            <ellipse cx="40" cy="140" rx="16" ry="8" fill="#ede5dd" stroke="#3d2b1f" stroke-width="2" />
+            <ellipse cx="80" cy="140" rx="16" ry="8" fill="#ede5dd" stroke="#3d2b1f" stroke-width="2" />
+            <!-- Arms -->
+            <ellipse cx="26" cy="108" rx="14" ry="10" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2"
+              transform="rotate(-15,26,108)" />
+            <ellipse cx="94" cy="108" rx="14" ry="10" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2"
+              transform="rotate(15,94,108)" />
+            <!-- Head -->
+            <circle cx="60" cy="55" r="38" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <!-- Ears -->
+            <circle cx="28" cy="25" r="15" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="28" cy="25" r="9" fill="#ffb6c1" />
+            <circle cx="92" cy="25" r="15" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="92" cy="25" r="9" fill="#ffb6c1" />
+            <!-- Snout -->
+            <ellipse cx="60" cy="62" rx="14" ry="10" fill="#fff" />
+            <!-- Eyes (simple dots) -->
+            <circle cx="47" cy="50" r="3" fill="#1a1a1a" />
+            <circle cx="73" cy="50" r="3" fill="#1a1a1a" />
+            <!-- Nose -->
+            <ellipse cx="60" cy="59" rx="4" ry="3" fill="#3d2b1f" />
+            <!-- Mouth (happy open) -->
+            <path d="M55 63 Q60 69 65 63" stroke="#3d2b1f" stroke-width="2" fill="none" stroke-linecap="round" />
+            <!-- Big Pink Cheeks -->
+            <circle cx="38" cy="62" r="8" fill="#ffb6c1" opacity=".7" />
+            <circle cx="82" cy="62" r="8" fill="#ffb6c1" opacity=".7" />
+            <!-- Bow -->
+            <ellipse cx="50" cy="82" rx="8" ry="5" fill="#ff6fd8" stroke="#3d2b1f" stroke-width="1.5"
+              transform="rotate(-10,50,82)" />
+            <ellipse cx="70" cy="82" rx="8" ry="5" fill="#ff6fd8" stroke="#3d2b1f" stroke-width="1.5"
+              transform="rotate(10,70,82)" />
+            <circle cx="60" cy="82" r="4" fill="#ff3cac" stroke="#3d2b1f" stroke-width="1" />
+          </svg>
+        </div>
+        <button class="scene-next" id="wishesNext">Play a Game! 🎈</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 5: BALLOON POP GAME -->
+  <div class="scene" id="scene5">
+    <div class="scene-center">
+      <div class="game-section">
+        <h2 class="game-title">🎈 Pop the Balloons! 🎈</h2>
+        <p class="game-subtitle">Pop all the birthday balloons before they fly away!</p>
+        <p class="game-score">Score: <span id="popScore">0</span> / <span id="popTotal">0</span></p>
+        <canvas id="balloonCanvas" width="500" height="400"></canvas>
+        <p class="game-result" id="gameResult">🎉 You did it! Happy Birthday Khushi Di! 🎉</p>
+        <button class="scene-next" id="gameNext" style="display:none;">See the Grand Finale 🎆</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 6: FINALE -->
+  <div class="scene" id="scene6">
+    <div class="scene-center">
+      <div class="finale-content">
+        <div class="finale-emojis">🎂 🎈 🧸 🎁 🌟</div>
+        <h1 class="finale-name">Khushi Di</h1>
+        <h2 class="finale-bday">Happy Birthday! 🎉🎂</h2>
+        <div class="finale-emojis">🥳 🎊 💃 🎶 💖</div>
+        <p class="finale-love">With Love <span>❤️</span></p>
+        <div class="teddy-scene" style="margin-top:20px">
+          <!-- Mocha (Milk & Mocha style — hugging pose) -->
+          <svg class="teddy-svg mocha" width="110" height="130" viewBox="0 0 120 150" style="left:25px">
+            <ellipse cx="60" cy="112" rx="36" ry="32" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <ellipse cx="40" cy="140" rx="16" ry="8" fill="#9a6b3c" stroke="#3d2b1f" stroke-width="2" />
+            <ellipse cx="80" cy="140" rx="16" ry="8" fill="#9a6b3c" stroke="#3d2b1f" stroke-width="2" />
+            <ellipse cx="94" cy="105" rx="14" ry="10" fill="#b5804e" stroke="#3d2b1f" stroke-width="2"
+              transform="rotate(25,94,105)" />
+            <circle cx="60" cy="55" r="38" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="28" cy="25" r="15" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="28" cy="25" r="9" fill="#9a6b3c" />
+            <circle cx="92" cy="25" r="15" fill="#b5804e" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="92" cy="25" r="9" fill="#9a6b3c" />
+            <ellipse cx="60" cy="62" rx="14" ry="10" fill="#debb8e" />
+            <circle cx="47" cy="50" r="3" fill="#1a1a1a" />
+            <circle cx="73" cy="50" r="3" fill="#1a1a1a" />
+            <ellipse cx="60" cy="59" rx="4" ry="3" fill="#3d2b1f" />
+            <path d="M56 63 Q60 68 64 63" stroke="#3d2b1f" stroke-width="2" fill="none" stroke-linecap="round" />
+            <circle cx="38" cy="62" r="8" fill="#f4a0a0" opacity=".6" />
+            <circle cx="82" cy="62" r="8" fill="#f4a0a0" opacity=".6" />
+          </svg>
+          <!-- Milk (Milk & Mocha style — hugging pose) -->
+          <svg class="teddy-svg milk" width="110" height="130" viewBox="0 0 120 150" style="right:25px">
+            <ellipse cx="60" cy="112" rx="36" ry="32" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <ellipse cx="40" cy="140" rx="16" ry="8" fill="#ede5dd" stroke="#3d2b1f" stroke-width="2" />
+            <ellipse cx="80" cy="140" rx="16" ry="8" fill="#ede5dd" stroke="#3d2b1f" stroke-width="2" />
+            <ellipse cx="26" cy="105" rx="14" ry="10" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2"
+              transform="rotate(-25,26,105)" />
+            <circle cx="60" cy="55" r="38" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="28" cy="25" r="15" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="28" cy="25" r="9" fill="#ffb6c1" />
+            <circle cx="92" cy="25" r="15" fill="#faf5f0" stroke="#3d2b1f" stroke-width="2.5" />
+            <circle cx="92" cy="25" r="9" fill="#ffb6c1" />
+            <ellipse cx="60" cy="62" rx="14" ry="10" fill="#fff" />
+            <circle cx="47" cy="50" r="3" fill="#1a1a1a" />
+            <circle cx="73" cy="50" r="3" fill="#1a1a1a" />
+            <ellipse cx="60" cy="59" rx="4" ry="3" fill="#3d2b1f" />
+            <path d="M55 63 Q60 69 65 63" stroke="#3d2b1f" stroke-width="2" fill="none" stroke-linecap="round" />
+            <circle cx="38" cy="62" r="8" fill="#ffb6c1" opacity=".7" />
+            <circle cx="82" cy="62" r="8" fill="#ffb6c1" opacity=".7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const scenes = document.querySelectorAll('.scene');
+      const bgMusic = document.getElementById('bgMusic');
+      const musicBtn = document.getElementById('musicBtn');
+      let currentScene = 0, musicPlaying = false;
+
+      function goToScene(i) {
+        if (i < 0 || i >= scenes.length) return;
+        const prev = currentScene;
+        scenes[prev].classList.remove('active');
+        scenes[prev].classList.add('exit');
+        setTimeout(() => scenes[prev].classList.remove('exit'), 800);
+        currentScene = i;
+        scenes[i].classList.add('active');
+        if (i === 3) startWishAnimation();
+        if (i === 4) startBalloonGame();
+        if (i === 5) startFinaleEffects();
+        if (i >= 1) startFloatingElements();
+      }
+
+      function startMusic() {
+        bgMusic.volume = .5;
+        bgMusic.play().then(() => { musicPlaying = true; musicBtn.style.display = 'flex'; musicBtn.classList.add('playing'); musicBtn.textContent = '🎵' }).catch(() => { });
+      }
+      musicBtn.addEventListener('click', () => {
+        if (musicPlaying) { bgMusic.pause(); musicBtn.classList.remove('playing'); musicBtn.textContent = '🔇'; musicPlaying = false }
+        else { bgMusic.play(); musicBtn.classList.add('playing'); musicBtn.textContent = '🎵'; musicPlaying = true }
+      });
+
+      /* PARTICLES */
+      const pC = document.getElementById('particles-canvas'), pX = pC.getContext('2d'); let parts = [];
+      function rP() { pC.width = innerWidth; pC.height = innerHeight } rP(); addEventListener('resize', rP);
+      class P { constructor() { this.reset() } reset() { this.x = Math.random() * pC.width; this.y = Math.random() * pC.height; this.vx = (Math.random() - .5) * .3; this.vy = (Math.random() - .5) - .3; this.r = Math.random() * 2 + .5; this.a = Math.random() * .6 + .2; this.c = ['#ff6fd8', '#fbc2eb', '#667eea', '#ffd700', '#ff9a9e', '#fff'][Math.floor(Math.random() * 6)] } update() { this.x += this.vx; this.y += this.vy; this.a -= .001; if (this.a <= 0 || this.x < 0 || this.x > pC.width || this.y < 0 || this.y > pC.height) this.reset() } draw() { pX.beginPath(); pX.arc(this.x, this.y, this.r, 0, Math.PI * 2); pX.fillStyle = this.c; pX.globalAlpha = this.a; pX.fill(); pX.globalAlpha = 1 } }
+      for (let i = 0; i < 120; i++)parts.push(new P);
+      (function aP() { pX.clearRect(0, 0, pC.width, pC.height); parts.forEach(p => { p.update(); p.draw() }); requestAnimationFrame(aP) })();
+
+      /* ENVELOPE */
+      const openGiftBtn = document.getElementById('openGiftBtn'), envWrap = document.getElementById('envelopeWrap'), env = document.getElementById('envelope');
+      openGiftBtn.addEventListener('click', () => { startMusic(); envWrap.classList.add('active'); setTimeout(() => env.classList.add('open'), 400) });
+      envWrap.addEventListener('click', () => { if (!env.classList.contains('open')) return; envWrap.classList.remove('active'); setTimeout(() => goToScene(1), 500) });
+
+      /* BLOW CANDLES — single button */
+      const blowBtn = document.getElementById('blowBtn'), flames = document.querySelectorAll('.flame'), smokes = document.querySelectorAll('.smoke');
+      blowBtn.addEventListener('click', () => {
+        blowBtn.classList.add('hidden');
+        flames.forEach((f, i) => { setTimeout(() => { f.classList.add('out'); smokes[i].classList.add('rising') }, i * 300) });
+        setTimeout(() => { launchConfetti(200); document.getElementById('hbdReveal').classList.add('show'); document.getElementById('cakeNext').style.display = 'inline-block' }, flames.length * 300 + 200);
+      });
+      document.getElementById('cakeNext').addEventListener('click', () => goToScene(2));
+
+      /* GALLERY */
+      const slides = document.querySelectorAll('.gallery-slide'), dots = document.querySelectorAll('.dot');
+      let cSlide = 0, sInt;
+      function showSlide(n) { slides[cSlide].classList.remove('active'); slides[cSlide].classList.add('exit-left'); const pv = cSlide; setTimeout(() => slides[pv].classList.remove('exit-left'), 600); cSlide = ((n % slides.length) + slides.length) % slides.length; slides[cSlide].classList.add('active'); dots.forEach(d => d.classList.remove('active')); dots[cSlide].classList.add('active') }
+      document.getElementById('nextSlide').addEventListener('click', () => { clearInterval(sInt); showSlide(cSlide + 1); autoS() });
+      document.getElementById('prevSlide').addEventListener('click', () => { clearInterval(sInt); showSlide(cSlide - 1); autoS() });
+      dots.forEach(d => d.addEventListener('click', () => { clearInterval(sInt); showSlide(+d.dataset.dot); autoS() }));
+      function autoS() { sInt = setInterval(() => showSlide(cSlide + 1), 3500) } autoS();
+      document.getElementById('galleryNext').addEventListener('click', () => goToScene(3));
+      let tSX = 0; const slider = document.getElementById('gallerySlider');
+      slider.addEventListener('touchstart', e => { tSX = e.touches[0].clientX }, { passive: true });
+      slider.addEventListener('touchend', e => { const d = tSX - e.changedTouches[0].clientX; if (Math.abs(d) > 50) { clearInterval(sInt); d > 0 ? showSlide(cSlide + 1) : showSlide(cSlide - 1); autoS() } }, { passive: true });
+
+      /* WISHES */
+      let wishS = false;
+      function startWishAnimation() { if (wishS) return; wishS = true; document.querySelectorAll('.wish-line').forEach((l, i) => { setTimeout(() => l.classList.add('visible'), i * 400) }) }
+      document.getElementById('wishesNext').addEventListener('click', () => goToScene(4));
+
+      /* BALLOON POP GAME */
+      const bCanvas = document.getElementById('balloonCanvas'), bCtx = bCanvas.getContext('2d');
+      let balloons = [], popCount = 0, totalBalloons = 20, gameActive = false, gameStarted = false;
+      const bColors = ['#ff6fd8', '#ff3cac', '#667eea', '#3cba92', '#f9d423', '#ff6b81', '#a18cd1', '#fbc2eb', '#ff9a9e', '#ffd700'];
+      document.getElementById('popTotal').textContent = totalBalloons;
+
+      class Balloon {
+        constructor() {
+          this.r = 25 + Math.random() * 15;
+          this.x = this.r + Math.random() * (bCanvas.width - this.r * 2);
+          this.y = bCanvas.height + this.r + Math.random() * 200;
+          this.vy = -(1 + Math.random() * 1.5);
+          this.vx = (Math.random() - .5) * .8;
+          this.color = bColors[Math.floor(Math.random() * bColors.length)];
+          this.alive = true; this.popped = false; this.popTime = 0;
+          this.wobble = Math.random() * Math.PI * 2;
+        }
+        update() {
+          if (this.popped) { this.popTime++; if (this.popTime > 15) this.alive = false; return }
+          this.wobble += .03;
+          this.x += this.vx + Math.sin(this.wobble) * .5;
+          this.y += this.vy;
+          if (this.y < -this.r * 2) this.alive = false;
+        }
+        draw() {
+          if (this.popped) {
+            bCtx.globalAlpha = 1 - this.popTime / 15;
+            bCtx.beginPath();
+            for (let i = 0; i < 8; i++) { const a = Math.PI * 2 * i / 8; const d = this.r * .5 + this.popTime * 2; bCtx.moveTo(this.x, this.y); bCtx.lineTo(this.x + Math.cos(a) * d, this.y + Math.sin(a) * d) }
+            bCtx.strokeStyle = this.color; bCtx.lineWidth = 2; bCtx.stroke();
+            bCtx.globalAlpha = 1; return;
+          }
+          // string
+          bCtx.beginPath(); bCtx.moveTo(this.x, this.y + this.r); bCtx.lineTo(this.x + Math.sin(this.wobble) * 5, this.y + this.r + 25); bCtx.strokeStyle = 'rgba(255,255,255,.3)'; bCtx.lineWidth = 1; bCtx.stroke();
+          // balloon body
+          bCtx.beginPath(); bCtx.ellipse(this.x, this.y, this.r * .85, this.r, 0, 0, Math.PI * 2); bCtx.fillStyle = this.color; bCtx.fill();
+          // shine
+          bCtx.beginPath(); bCtx.ellipse(this.x - this.r * .25, this.y - this.r * .3, this.r * .2, this.r * .3, -.3, 0, Math.PI * 2); bCtx.fillStyle = 'rgba(255,255,255,.3)'; bCtx.fill();
+          // knot
+          bCtx.beginPath(); bCtx.moveTo(this.x - 4, this.y + this.r); bCtx.lineTo(this.x, this.y + this.r + 5); bCtx.lineTo(this.x + 4, this.y + this.r); bCtx.fillStyle = this.color; bCtx.fill();
+        }
+        hitTest(mx, my) { return !this.popped && Math.hypot(mx - this.x, my - this.y) < this.r }
+      }
+
+      function startBalloonGame() {
+        if (gameStarted) return; gameStarted = true; gameActive = true; popCount = 0; balloons = [];
+        const spawnInterval = setInterval(() => {
+          if (popCount >= totalBalloons) { clearInterval(spawnInterval); return }
+          if (balloons.filter(b => b.alive && !b.popped).length < 8) { balloons.push(new Balloon()); }
+        }, 500);
+        animBalloons();
+      }
+
+      function animBalloons() {
+        bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+        balloons = balloons.filter(b => b.alive);
+        balloons.forEach(b => { b.update(); b.draw() });
+        if (popCount >= totalBalloons) {
+          gameActive = false;
+          document.getElementById('gameResult').classList.add('show');
+          document.getElementById('gameNext').style.display = 'inline-block';
+          launchConfetti(200);
+          return;
+        }
+        requestAnimationFrame(animBalloons);
+      }
+
+      bCanvas.addEventListener('click', e => {
+        if (!gameActive) return;
+        const rect = bCanvas.getBoundingClientRect();
+        const sx = bCanvas.width / rect.width, sy = bCanvas.height / rect.height;
+        const mx = (e.clientX - rect.left) * sx, my = (e.clientY - rect.top) * sy;
+        for (let i = balloons.length - 1; i >= 0; i--) {
+          if (balloons[i].hitTest(mx, my)) { balloons[i].popped = true; popCount++; document.getElementById('popScore').textContent = popCount; break }
+        }
+      });
+
+      document.getElementById('gameNext').addEventListener('click', () => goToScene(5));
+
+      /* FINALE */
+      let finaleS = false;
+      function startFinaleEffects() { if (finaleS) return; finaleS = true; launchConfetti(300); setInterval(() => launchConfetti(30), 2500) }
+
+      /* CONFETTI */
+      const cC = document.getElementById('confetti-canvas'), cX = cC.getContext('2d'); let conf = [];
+      function rC() { cC.width = innerWidth; cC.height = innerHeight } rC(); addEventListener('resize', rC);
+      const cCol = ['#ff6fd8', '#fbc2eb', '#667eea', '#ffd700', '#ff9a9e', '#3cba92', '#f9d423', '#ff3cac', '#a18cd1', '#ff6b81'];
+      class C { constructor() { this.x = Math.random() * cC.width; this.y = -10 - Math.random() * cC.height * .4; this.w = Math.random() * 10 + 5; this.h = Math.random() * 6 + 3; this.vx = (Math.random() - .5) * 3; this.vy = Math.random() * 3 + 2; this.rot = Math.random() * 360; this.rv = (Math.random() - .5) * 10; this.c = cCol[Math.floor(Math.random() * cCol.length)]; this.alive = true } update() { this.x += this.vx; this.y += this.vy; this.vy += .04; this.rot += this.rv; if (this.y > cC.height + 20) this.alive = false } draw() { cX.save(); cX.translate(this.x, this.y); cX.rotate(this.rot * Math.PI / 180); cX.fillStyle = this.c; cX.fillRect(-this.w / 2, -this.h / 2, this.w, this.h); cX.restore() } }
+      function launchConfetti(n) { for (let i = 0; i < n; i++)conf.push(new C) }
+      (function aC() { cX.clearRect(0, 0, cC.width, cC.height); conf = conf.filter(c => c.alive); conf.forEach(c => { c.update(); c.draw() }); requestAnimationFrame(aC) })();
+
+      /* FLOATING */
+      let fS = false; const fE = ['🎈', '🎁', '🧸', '💖', '🌟', '🎂', '🎉', '🦋', '🌸', '💝', '🥳', '✨', '🎀', '💐'];
+      function startFloatingElements() { if (fS) return; fS = true; const ct = document.getElementById('floatingElements'); function sp() { const e = document.createElement('span'); e.className = 'float-item'; e.textContent = fE[Math.floor(Math.random() * fE.length)]; e.style.left = Math.random() * 100 + '%'; e.style.fontSize = (Math.random() * 1.5 + 1) + 'rem'; e.style.animationDuration = (Math.random() * 6 + 6) + 's'; e.style.animationDelay = Math.random() * 2 + 's'; ct.appendChild(e); setTimeout(() => e.remove(), 14000) } for (let i = 0; i < 15; i++)setTimeout(sp, i * 300); setInterval(sp, 800) }
+
+    })();
+  </script>
+</body>
+
+</html>
